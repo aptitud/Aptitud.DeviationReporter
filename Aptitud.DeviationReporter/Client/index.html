@@ -89,14 +89,14 @@
 			rapport.name = $("#username").val();
 			//alert(JSON.stringify(rapport));
 			$.ajax({
-                url: "/api/deviation/",
+                url: "/api/deviation/"+rapport.name,
                 type: "POST",
-                data: JSON.stringify(rapport),
+                data: JSON.stringify(rapport.avvikelser),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 processdata: true,
                 success: function (msg) {
-                    alert('Registerd successfully');
+                    alert('Avvikelse sparad');
                 },
                 error: function (msg) {
                     alert('Failed ' + msg);
