@@ -1,0 +1,9 @@
+.ui-li-heading, .ui-li-desc {
+	display: inline;
+	padding-right: 15px;
+}
+
+.ui-btn-up-d {
+	background: #0aff26;
+	color: white;
+}

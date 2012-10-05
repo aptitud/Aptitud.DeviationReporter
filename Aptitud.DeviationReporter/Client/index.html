@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+<link type="text/css" href="css/style.css" rel="stylesheet">
+<link type="text/css" href="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.min.css" rel="stylesheet" />
+
+<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+
+<script src="js/json2.js"></script>
+
+<script type="text/javascript"
+	src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
+<script type="text/javascript"
+	src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
+<script type="text/javascript"
+	src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.slidebox.min.js"></script>
+<script type="text/javascript"
+	src="http://dev.jtsage.com/cdn/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+<script type="text/javascript">
+	jQuery.extend(jQuery.mobile.datebox.prototype.options, {
+		'overrideDateFormat' : '%Y-%m-%d',
+		'overrideHeaderFormat' : '%Y-%m-%d'
+	});
+	
+	jQuery.extend(jQuery.mobile.datebox.prototype.options.lang, {
+    'sv': {
+	        dateFormat: '%m/%d/%Y'
+	    }
+	});
+	
+	jQuery.extend(jQuery.mobile.datebox.prototype.options, {
+	    useLang: 'sv'
+	});
+	
+</script>
+</head>
+
+<body>
+	<div id="addpage" data-role="page" data-theme="e">
+		<div data-role="header" data-theme="b">
+			<h1>Undantagsrapport</h1>
+		</div>
+
+		<div data-role="content">
+			<div data-role="fieldcontain" class="ui-hide-label">
+				<label for="username">Namn:</label> <input type="text"
+					name="username" id="username" value="" placeholder="Namn" />
+			</div>
+			<fieldset data-role="controlgroup" data-type="horizontal">
+				<input type="radio" name="deviationType" id="deviationTypeVab"
+					value="VAB" checked="checked" /> <label for="deviationTypeVab">VAB</label>
+				<input type="radio" name="deviationType" id="deviationTypeSjuk"
+					value="SJUK" /> <label for="deviationTypeSjuk">Sjuk</label> <input
+					type="radio" name="deviationType" id="deviationTypeSemester"
+					value="SEMESTER" /> <label for="deviationTypeSemester">Semester</label>
+				<input type="radio" name="deviationType" id="deviationTypeOvertime"
+					value="ÖVERTID" /> <label for="deviationTypeOvertime">Övertid</label>
+			</fieldset>
+			<input name="deviationDate" id="deviationDate" type="text"
+				data-role="datebox"
+				data-options='{"mode":"slidebox", "useNewStyle":true}' />
+			<input type="range" name="deviationHours" id="deviationHours"
+				value="8" min="0" max="8" />
+
+			<a href="" id="adddeviation" data-role="button">Lägg till</a>
+
+			<ul data-role="listview" id="deviationList" data-divider-theme="b" data-autodividers="true" data-inset="true">
+				<li data-role="list-divider" id="deviationListHeader">Avvikelser</li>
+			</ul>
+
+			<a href="" data-role="button" data-theme="d" id="senddeviation">Skicka</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var rapport = new Object();
+		rapport.avvikelser = new Array();
+		
+		$('#addpage').live( 'pageinit',function(event){
+			var date = new Date();
+			$("#deviationDate").val(dateFormat(new Date(), "YYYY-MM-DD"));
+			
+			$("#deviationList").listview({
+			  autodividers: true,
+	
+			  autodividersSelector: function ( li ) {
+			    var out = li.find('input');
+				return out.val();
+			  }
+			});
+			
+			$("#senddeviation").hide();
+		});
+	
+		$("#senddeviation").click(function() {
+			rapport.name = $("#username").val();
+			//alert(JSON.stringify(rapport));
+			$.ajax({
+                url: "http://deviation.apphb.com/api/deviation/",
+                type: "POST",
+                data: JSON.stringify(rapport),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processdata: true,
+                success: function (msg) {
+                    alert(msg);
+                    alert('Registerd successfully');
+                },
+                error: function (msg) {
+                    alert('Failed ' + msg);
+                }
+            });
+		});
+
+		$("#adddeviation").click(function() {
+			var deviation =new Object();
+			deviation.Type = $("input:radio[name=deviationType]:checked").val();
+			deviation.Date = $("#deviationDate").val();
+			deviation.Hours = $("#deviationHours").val();
+			rapport.avvikelser.push(deviation);
+			addDeviation(deviation);
+			$("#senddeviation").show();
+		});
+		
+		function addDeviation(deviation) {
+			$("#deviationList").append(
+				"<li>"+
+					"<input type='hidden' value='"+deviation.Type+"'/>"+
+					"<p>"+
+						"<strong>"+deviation.Date+"</strong>"+
+					"</p>"+
+					"<p>"+deviation.Hours+"</p></li>"
+			).listview('refresh');
+		}
+		
+		function dateFormat(date, format) {
+		    format = format.replace("DD", (date.getDate() < 10 ? '0' : '') + date.getDate());
+		    format = format.replace("MM", (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1));
+		    format = format.replace("YYYY", date.getFullYear());
+		    return format;
+		}
+		
+	</script>
+</body>
+</html>
