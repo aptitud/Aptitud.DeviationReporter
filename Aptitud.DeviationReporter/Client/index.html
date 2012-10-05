@@ -4,6 +4,7 @@
 <title>Page Title</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes" />
 
 <link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 <link type="text/css" href="css/style.css" rel="stylesheet">
@@ -13,60 +14,47 @@
 <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 
 <script src="js/json2.js"></script>
-
-<script type="text/javascript"
-	src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
-<script type="text/javascript"
-	src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
-<script type="text/javascript"
-	src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.slidebox.min.js"></script>
-<script type="text/javascript"
-	src="http://dev.jtsage.com/cdn/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
+<script type="text/javascript" src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
+<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.slidebox.min.js"></script>
+<script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/i18n/jquery.mobile.datebox.i18n.en_US.utf8.js"></script>
 <script type="text/javascript">
 	jQuery.extend(jQuery.mobile.datebox.prototype.options, {
 		'overrideDateFormat' : '%Y-%m-%d',
 		'overrideHeaderFormat' : '%Y-%m-%d'
 	});
-	
-	jQuery.extend(jQuery.mobile.datebox.prototype.options.lang, {
-    'sv': {
-	        dateFormat: '%m/%d/%Y'
-	    }
-	});
-	
-	jQuery.extend(jQuery.mobile.datebox.prototype.options, {
-	    useLang: 'sv'
-	});
-	
 </script>
 </head>
 
 <body>
-	<div id="addpage" data-role="page" data-theme="e">
+	<div id="addpage" data-role="page" data-theme="a">
 		<div data-role="header" data-theme="b">
-			<h1>Undantagsrapport</h1>
+			<h1>Aptitud</h1>
 		</div>
 
 		<div data-role="content">
+			<div id="pageHeader"><h2>Undantagsrapportering</h2></div>
 			<div data-role="fieldcontain" class="ui-hide-label">
-				<label for="username">Namn:</label> <input type="text"
-					name="username" id="username" value="" placeholder="Namn" />
+				<label for="username">Namn:</label> 
+				<input type="text" data-theme="c" name="username" id="username" value="" placeholder="Namn" />
 			</div>
-			<fieldset data-role="controlgroup" data-type="horizontal">
+			<fieldset data-role="controlgroup" data-type="vertical">
 				<input type="radio" name="deviationType" id="deviationTypeVab"
 					value="VAB" checked="checked" /> <label for="deviationTypeVab">VAB</label>
 				<input type="radio" name="deviationType" id="deviationTypeSjuk"
 					value="SJUK" /> <label for="deviationTypeSjuk">Sjuk</label> <input
 					type="radio" name="deviationType" id="deviationTypeSemester"
 					value="SEMESTER" /> <label for="deviationTypeSemester">Semester</label>
-				<input type="radio" name="deviationType" id="deviationTypeOvertime"
-					value="ÖVERTID" /> <label for="deviationTypeOvertime">Övertid</label>
+				<input type="radio" name="deviationType" id="deviationTypeDeviation"
+					value="AVVIKELSE" /> <label for="deviationTypeDeviation">Avvikelse</label>
 			</fieldset>
-			<input name="deviationDate" id="deviationDate" type="text"
+			
+			<input name="deviationDate" id="deviationDate" type="text" data-theme="c"
 				data-role="datebox"
 				data-options='{"mode":"slidebox", "useNewStyle":true}' />
+			
 			<input type="range" name="deviationHours" id="deviationHours"
-				value="8" min="0" max="8" />
+				value="8" min="-8" max="8" />
 
 			<a href="" id="adddeviation" data-role="button">Lägg till</a>
 
@@ -74,7 +62,7 @@
 				<li data-role="list-divider" id="deviationListHeader">Avvikelser</li>
 			</ul>
 
-			<a href="" data-role="button" data-theme="d" id="senddeviation">Skicka</a>
+			<a href="" data-role="button" data-theme="b" id="senddeviation">Skicka</a>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -101,14 +89,13 @@
 			rapport.name = $("#username").val();
 			//alert(JSON.stringify(rapport));
 			$.ajax({
-                url: "http://deviation.apphb.com/api/deviation/",
+                url: "/api/deviation/",
                 type: "POST",
                 data: JSON.stringify(rapport),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 processdata: true,
                 success: function (msg) {
-                    alert(msg);
                     alert('Registerd successfully');
                 },
                 error: function (msg) {
@@ -134,7 +121,7 @@
 					"<p>"+
 						"<strong>"+deviation.Date+"</strong>"+
 					"</p>"+
-					"<p>"+deviation.Hours+"</p></li>"
+					"<span class='ui-li-count'>"+deviation.Hours+"</span></li>"
 			).listview('refresh');
 		}
 		
