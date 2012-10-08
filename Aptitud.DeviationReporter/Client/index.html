@@ -89,7 +89,7 @@
 			rapport.name = $("#username").val();
 			//alert(JSON.stringify(rapport));
 			$.ajax({
-                url: "/api/deviation/"+rapport.name,
+                url: "/api/deviation/",
                 type: "POST",
                 data: JSON.stringify(rapport.avvikelser),
                 contentType: "application/json; charset=utf-8",
@@ -105,10 +105,11 @@
 		});
 
 		$("#adddeviation").click(function() {
-			var deviation =new Object();
-			deviation.Type = $("input:radio[name=deviationType]:checked").val();
-			deviation.Date = $("#deviationDate").val();
-			deviation.Hours = $("#deviationHours").val();
+		    var deviation = new Object();
+		    deviation.Reporter = $("#username").val();
+		    deviation.DeviationType = $("input:radio[name=deviationType]:checked").val();
+			deviation.ReportDate = $("#deviationDate").val();
+			deviation.Duration = $("#deviationHours").val();
 			rapport.avvikelser.push(deviation);
 			addDeviation(deviation);
 			$("#senddeviation").show();
@@ -117,11 +118,11 @@
 		function addDeviation(deviation) {
 			$("#deviationList").append(
 				"<li>"+
-					"<input type='hidden' value='"+deviation.Type+"'/>"+
+					"<input type='hidden' value='" + deviation.DeviationType + "'/>" +
 					"<p>"+
-						"<strong>"+deviation.Date+"</strong>"+
+						"<strong>" + deviation.ReportDate + "</strong>" +
 					"</p>"+
-					"<span class='ui-li-count'>"+deviation.Hours+"</span></li>"
+					"<span class='ui-li-count'>" + deviation.Duration + "</span></li>"
 			).listview('refresh');
 		}
 		
