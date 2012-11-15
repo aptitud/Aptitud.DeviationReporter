@@ -6,21 +6,22 @@ using Simple.Data;
 
 namespace Aptitud.DeviationReporter.Repositories
 {
-    public class InMemoryDeviationRepository : IDeviationRepository
+    public class SQLServerDeviationRepository : IDeviationRepository
     {
-        private List<Models.Deviation> deviations = new List<Models.Deviation>();
+        private dynamic db;
+        public SQLServerDeviationRepository(dynamic db)
+        {
+            this.db = db;
+        }
         public IEnumerable<Models.Deviation> GetDeviationByReporterName(string reporterName)
         {
-            return deviations.Where(d => d.Reporter == reporterName);
+            return db.Deviations.FindAllByReporter(reporterName);
         }
 
         public void AddDeviations(IEnumerable<Models.Deviation> deviations)
         {
-
-
-            this.deviations.AddRange(deviations);
+            foreach (var d in deviations)
+                db.Deviations.Insert(d);
         }
     }
-
-    
 }

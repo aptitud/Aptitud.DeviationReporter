@@ -5,38 +5,33 @@ using Models;
 using NUnit.Framework;
 using System.Linq;
 using Should.Fluent;
+using Simple.Data;
+
 
 namespace Aptitud.DeviationReporter.UnitTests
 {
     [TestFixture]
     public class InMemoryDeviationRepositoryTests
     {
-        const string TEST_REPORTER_NAME = "Marcus";
         private IDeviationRepository repo;
-        
+
         [SetUp]
         public void Setup()
         {
             repo = new InMemoryDeviationRepository();
-        }
-
-        private Deviation CreateTestDeviation(string reporterName)
-        {
-            return new Deviation
-            {
-                Reporter = reporterName
-            };
+            var adapter = new InMemoryAdapter();
+            Database.UseMockAdapter(adapter);
         }
 
         [Test]
         public void AddDeviation_should_add_a_new_deviation()
         {
             // Act
-            repo.AddDeviations(new[] { CreateTestDeviation(TEST_REPORTER_NAME) });
+            repo.AddDeviations(new[] { TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME) });
 
             // Assert
-            var deviationFromRepo = repo.GetDeviationByReporterName(TEST_REPORTER_NAME).SingleOrDefault();
-            deviationFromRepo.Reporter.Should().Equal(TEST_REPORTER_NAME);
+            var deviationFromRepo = repo.GetDeviationByReporterName(TestData.TEST_REPORTER_NAME).SingleOrDefault();
+            deviationFromRepo.Reporter.Should().Equal(TestData.TEST_REPORTER_NAME);
         }
 
         [Test]
@@ -45,20 +40,18 @@ namespace Aptitud.DeviationReporter.UnitTests
             // Arrange
             repo.AddDeviations(new[]
                 {  
-                    CreateTestDeviation(TEST_REPORTER_NAME), 
-                    CreateTestDeviation(TEST_REPORTER_NAME + "1"),
-                    CreateTestDeviation(TEST_REPORTER_NAME +"3"),
-                    CreateTestDeviation(TEST_REPORTER_NAME +"2")
+                    TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME), 
+                    TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"),
+                    TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME +"3"),
+                    TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME +"2")
                 });
 
             // Act
-            var ds = repo.GetDeviationByReporterName(TEST_REPORTER_NAME);
+            var ds = repo.GetDeviationByReporterName(TestData.TEST_REPORTER_NAME);
 
             // Assert
             ds.Count().Should().Equal(1);
-            ds.First().Reporter.Should().Equal(TEST_REPORTER_NAME);
-
-
+            ds.First().Reporter.Should().Equal(TestData.TEST_REPORTER_NAME);
         }
     }
 }
