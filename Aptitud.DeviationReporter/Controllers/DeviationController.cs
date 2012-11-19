@@ -1,12 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
 using Aptitud.DeviationReporter.Repositories;
+using Simple.Data;
 
 namespace Aptitud.DeviationReporter.Controllers
 {
     public class DeviationController : ApiController
     {
-        private static readonly IDeviationRepository repository = new InMemoryDeviationRepository();
+        // private static readonly IDeviationRepository repository = new InMemoryDeviationRepository();
+
+        readonly IDeviationRepository repository;
+
+        public DeviationController()
+        {
+            repository = new SQLServerDeviationRepository(Database.Open());
+        }
+
+        public DeviationController(IDeviationRepository repository)
+        {
+            this.repository = repository;
+        }
+
         // GET api/deviation
         public IEnumerable<Models.Deviation> GetDeviationByReporter(string reporterName)
         {

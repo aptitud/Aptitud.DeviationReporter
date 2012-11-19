@@ -9,5 +9,8 @@ namespace Models
         public DateTime ReportDate { get; set; }
         public string DeviationType { get; set; }
         public TimeSpan Duration { get; set; }
+
+
+
     }
 }

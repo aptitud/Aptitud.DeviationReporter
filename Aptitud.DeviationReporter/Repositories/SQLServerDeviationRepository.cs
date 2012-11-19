@@ -9,6 +9,7 @@ namespace Aptitud.DeviationReporter.Repositories
     public class SQLServerDeviationRepository : IDeviationRepository
     {
         private dynamic db;
+
         public SQLServerDeviationRepository(dynamic db)
         {
             this.db = db;
