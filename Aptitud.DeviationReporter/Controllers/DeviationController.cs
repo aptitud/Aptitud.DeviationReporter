@@ -7,14 +7,7 @@ namespace Aptitud.DeviationReporter.Controllers
 {
     public class DeviationController : ApiController
     {
-        // private static readonly IDeviationRepository repository = new InMemoryDeviationRepository();
-
         readonly IDeviationRepository repository;
-
-        public DeviationController()
-        {
-            repository = new SQLServerDeviationRepository(Database.Open());
-        }
 
         public DeviationController(IDeviationRepository repository)
         {
