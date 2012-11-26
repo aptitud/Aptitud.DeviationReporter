@@ -1,35 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
+﻿using System.Collections.Generic;
 using System.Web.Http;
+using Aptitud.DeviationReporter.Repositories;
+using Simple.Data;
 
 namespace Aptitud.DeviationReporter.Controllers
 {
-    public interface IDeviationRepository
-    {
-        IEnumerable<Models.Deviation> GetDeviationByReporterName(string reporterName);
-        void AddDeviations(IEnumerable<Models.Deviation> deviations);
-    }
-
-    public class InMemoryDeviationRepository : IDeviationRepository
-    {
-        private List<Models.Deviation> deviations = new List<Models.Deviation>();
-        public IEnumerable<Models.Deviation> GetDeviationByReporterName(string reporterName)
-        {
-            return deviations.Where(d => d.Reporter == reporterName);
-        }
-
-        public void AddDeviations(IEnumerable<Models.Deviation> deviations)
-        {
-            this.deviations.AddRange(deviations);
-        }
-    }
-
     public class DeviationController : ApiController
     {
-        private static readonly IDeviationRepository repository = new InMemoryDeviationRepository();
+        readonly IDeviationRepository repository;
+
+        public DeviationController(IDeviationRepository repository)
+        {
+            this.repository = repository;
+        }
+
         // GET api/deviation
         public IEnumerable<Models.Deviation> GetDeviationByReporter(string reporterName)
         {

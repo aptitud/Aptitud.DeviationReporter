@@ -3,12 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aptitud.DeviationReporter", "Aptitud.DeviationReporter\Aptitud.DeviationReporter.csproj", "{45A53A53-F218-4498-845E-CFB9BB921318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aptitud.DeviationReporter.UnitTests", "Aptitud.DeviationReporter.UnitTests\Aptitud.DeviationReporter.UnitTests.csproj", "{011C0A67-AA0D-485F-95DE-F838F8537F6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{011C0A67-AA0D-485F-95DE-F838F8537F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{011C0A67-AA0D-485F-95DE-F838F8537F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{011C0A67-AA0D-485F-95DE-F838F8537F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{011C0A67-AA0D-485F-95DE-F838F8537F6F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{45A53A53-F218-4498-845E-CFB9BB921318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{45A53A53-F218-4498-845E-CFB9BB921318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45A53A53-F218-4498-845E-CFB9BB921318}.Release|Any CPU.ActiveCfg = Release|Any CPU
