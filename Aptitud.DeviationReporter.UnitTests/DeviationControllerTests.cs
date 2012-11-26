@@ -23,10 +23,9 @@ namespace Aptitud.DeviationReporter.UnitTests
         [SetUp]
         public void Setup()
         {
-            _db = Database.Open();
-
             var adapter = new InMemoryAdapter();
             Database.UseMockAdapter(adapter);
+            _db = Database.Open();
             var repo = new SQLServerDeviationRepository(_db);
 
             _controllerUndertest = new DeviationController(repo);
