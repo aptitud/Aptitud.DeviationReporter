@@ -14,6 +14,12 @@ namespace Aptitud.DeviationReporter.Controllers
             this.repository = repository;
         }
 
+        // HACK: Until we get Ninject or something in place
+        public DeviationController()
+        {
+            repository = new SQLServerDeviationRepository(WebApiApplication.DB);
+        }
+
         // GET api/deviation
         public IEnumerable<Models.Deviation> GetDeviationByReporter(string reporterName)
         {
