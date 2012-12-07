@@ -9,15 +9,10 @@ namespace Aptitud.DeviationReporter.Controllers
     {
         readonly IDeviationRepository repository;
 
-        public DeviationController(IDeviationRepository repository)
-        {
-            this.repository = repository;
-        }
-
         // HACK: Until we get Ninject or something in place
-        public DeviationController()
+        public DeviationController(IDeviationRepository repo)
         {
-            repository = new SQLServerDeviationRepository(WebApiApplication.DB);
+            repository = repo;
         }
 
         // GET api/deviation

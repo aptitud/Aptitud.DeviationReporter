@@ -10,10 +10,16 @@ namespace Aptitud.DeviationReporter.Repositories
     {
         private dynamic db;
 
+        public SQLServerDeviationRepository()
+        {
+            this.db = WebApiApplication.DB;
+        }
+
         public SQLServerDeviationRepository(dynamic db)
         {
             this.db = db;
         }
+
         public IEnumerable<Models.Deviation> GetDeviationByReporterName(string reporterName)
         {
             return db.Deviations.FindAllByReporter(reporterName);
