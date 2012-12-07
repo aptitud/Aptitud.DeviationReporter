@@ -96,8 +96,8 @@
 		        success: function (data) {
 		            var csvdata = "data:application/octet-stream,";
 		            $.each(data, function (index, element) {
-		                
-		                csvdata += element.Reporter + ";" + element.DeviationType + ";" + element.ReportDate + ";" + element.Duration + ";\r\n";
+		                var numstr = new String(element.Duration).replace(":00:00", "");
+		                csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
 		            });                 
 		            window.location = encodeURI(csvdata);
 		        },
