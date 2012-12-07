@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Aptitud.DeviationReporter.Repositories;
 using Simple.Data;
+using Models;
 
 namespace Aptitud.DeviationReporter.Controllers
 {
@@ -37,6 +38,11 @@ namespace Aptitud.DeviationReporter.Controllers
         public void DeleteDeviationById(int id)
         {
 
+        }
+
+        public IEnumerable<Deviation> GetDeviations()
+        {
+            return repository.GetDeviations();
         }
     }
 }

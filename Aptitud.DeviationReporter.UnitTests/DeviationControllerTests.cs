@@ -62,5 +62,23 @@ namespace Aptitud.DeviationReporter.UnitTests
             deviationFromDb.Should().Not.Be.Null();
             deviationFromDb.Reporter.Should().Equal(TestData.TEST_REPORTER_NAME);
         }
+
+        [Test]
+        public void GetDeviation_should_return_all_deviations()
+        { 
+            //Arrange
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
+
+            //Act
+            var result = _controllerUndertest.GetDeviations();
+
+            //Assert
+            Assert.AreEqual(6, result.Count());
+        }
     }
 }

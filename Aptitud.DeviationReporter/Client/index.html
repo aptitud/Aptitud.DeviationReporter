@@ -33,6 +33,7 @@
 		</div>
 
 		<div data-role="content">
+            <a href="" id="generateCSV" data-role="button">Hämta rapport</a>
 			<div id="pageHeader"><h2>Undantagsrapportering</h2></div>
 			<div data-role="fieldcontain" class="ui-hide-label">
 				<label for="username">Namn:</label> 
@@ -85,6 +86,27 @@
 			$("#senddeviation").hide();
 		});
 	
+		$("#generateCSV").click(function () {
+		    $.ajax({
+		        url: "/api/deviation/",
+		        type: "GET",
+		        contentType: "application/json; charset=utf-8",
+		        dataType: "json",
+		        processdata: true,
+		        success: function (data) {
+		            var csvdata = "data:application/octet-stream,";
+		            $.each(data, function (index, element) {
+		                
+		                csvdata += element.Reporter + ";" + element.DeviationType + ";" + element.ReportDate + ";" + element.Duration + ";\r\n";
+		            });                 
+		            window.location = encodeURI(csvdata);
+		        },
+		        error: function (msg) {
+		            alert('Failed ' + msg);
+		        }
+		    });
+		});
+
 		$("#senddeviation").click(function() {
 			rapport.name = $("#username").val();
 			//alert(JSON.stringify(rapport));
