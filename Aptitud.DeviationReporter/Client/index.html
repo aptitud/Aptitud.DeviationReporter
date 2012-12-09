@@ -94,11 +94,18 @@
 		        dataType: "json",
 		        processdata: true,
 		        success: function (data) {
+
+		            if (data.length == 0) {
+		                alert('Det finns inga avvikelser att rapportera!');
+		                return;
+		            }
+
 		            var csvdata = "data:application/octet-stream,";
 		            $.each(data, function (index, element) {
 		                var numstr = new String(element.Duration).replace(":00:00", "");
 		                csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
-		            });                 
+		            });
+                    
 		            window.location = encodeURI(csvdata);
 		        },
 		        error: function (msg) {

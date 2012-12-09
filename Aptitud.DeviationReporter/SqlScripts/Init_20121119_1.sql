@@ -24,7 +24,8 @@ CREATE TABLE [dbo].[Deviations](
 	[Reporter] [varchar](100) NOT NULL,
 	[DeviationType] [varchar](30) NOT NULL,
 	[ReportDate] [datetime] NOT NULL,
-	[DurationTicks] [bigint] NOT NULL
+	[DurationTicks] [bigint] NOT NULL,
+	[IsReported] BIT NOT NULL DEFAULT 0
 ) ON [PRIMARY]
 
 GO

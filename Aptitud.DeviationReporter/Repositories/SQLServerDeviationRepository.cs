@@ -34,7 +34,14 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Deviation> GetDeviations()
         {
-            var result = db.Deviations.All().ToList<Deviation>();
+            var result = db.Deviations.FindAll(db.Deviations.IsReported == false).ToList<Deviation>();
+
+            for (int i = result.Count; i > 0; i--)
+            {
+                var deviation = result[i-1];
+                deviation.IsReported = true;
+                db.Deviations.Update(Id: deviation.Id, IsReported:true);
+            }
 
             return result;
         }

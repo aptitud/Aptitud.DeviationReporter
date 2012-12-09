@@ -24,6 +24,7 @@ namespace Aptitud.DeviationReporter.UnitTests
         public void Setup()
         {
             var adapter = new InMemoryAdapter();
+            adapter.SetKeyColumn("Deviations", "Id");
             Database.UseMockAdapter(adapter);
             _db = Database.Open();
             var repo = new SQLServerDeviationRepository(_db);
@@ -80,5 +81,25 @@ namespace Aptitud.DeviationReporter.UnitTests
             //Assert
             Assert.AreEqual(6, result.Count());
         }
+
+        [Test]
+        public void GetDeviation_should_mark_returneddeviations_as_reported()
+        {
+            //Arrange
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
+            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
+
+            //Act
+            var result = _controllerUndertest.GetDeviations();
+
+            //Assert
+            var reported = result.Where(d => d.IsReported == true);
+            Assert.AreEqual(6, reported.Count());
+        }
+
     }
 }

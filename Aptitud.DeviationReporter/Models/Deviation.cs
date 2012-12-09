@@ -4,6 +4,8 @@ namespace Models
 {
     public class Deviation
     {
+        private bool isReported = false;
+
         public int Id { get; set; }
         public string Reporter { get; set; }
         public DateTime ReportDate { get; set; }
@@ -21,5 +23,6 @@ namespace Models
             }
         }
 
+        public bool IsReported { get{return isReported;} set {isReported = value;} }
     }
 }
