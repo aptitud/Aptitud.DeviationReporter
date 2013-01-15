@@ -10,7 +10,6 @@ namespace Aptitud.DeviationReporter.Controllers
     {
         readonly IDeviationRepository repository;
 
-        // HACK: Until we get Ninject or something in place
         public DeviationController(IDeviationRepository repo)
         {
             repository = repo;
