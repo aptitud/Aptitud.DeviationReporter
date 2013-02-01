@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Web.Http;
-using Aptitud.DeviationReporter.Repositories;
-using Simple.Data;
+﻿using Aptitud.DeviationReporter.Repositories;
 using Models;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace Aptitud.DeviationReporter.Controllers
 {
@@ -42,6 +41,18 @@ namespace Aptitud.DeviationReporter.Controllers
         public IEnumerable<Deviation> GetDeviations()
         {
             return repository.GetDeviations();
+        }
+
+        public double GetDefaultHoursForDeviationType(string deviationType)
+        {
+            double defaultHours = 8;
+
+            if (deviationType.ToUpperInvariant() == "FLEX")
+            {
+                defaultHours = 0;
+            }
+
+            return defaultHours;
         }
     }
 }

@@ -121,7 +121,28 @@
             });
 
             $("#senddeviation").hide();
+            $("input:radio[name=deviationType]").click(function () { updateDefaultHoursForDeviationType(); });
+            updateDefaultHoursForDeviationType();
         });
+
+        function updateDefaultHoursForDeviationType() {
+            var deviationType = $("input:radio[name=deviationType]:checked").val();
+            var deviationHours = $('#deviationHours');
+            $.ajax({
+                url: "/api/deviation?deviationType=" + deviationType,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processdata: true,
+                success: function (data) {
+                    deviationHours.val(data);
+                },
+                error: function (msg) {
+                    alert('Failed ' + msg);
+                    deviationHours.val(8.0);
+                }
+            });
+        }
 
         $("#generateCSV").click(function () {
             $.ajax({

@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using Aptitud.DeviationReporter.Controllers;
+﻿using Aptitud.DeviationReporter.Controllers;
 using Aptitud.DeviationReporter.Repositories;
-using NUnit.Framework;
-using Simple.Data;
-using Should.Fluent;
 using Models;
-using System.Collections.Generic;
+using NUnit.Framework;
+using Should.Fluent;
+using Simple.Data;
+using System.Linq;
 
 namespace Aptitud.DeviationReporter.UnitTests
 {
@@ -55,7 +54,7 @@ namespace Aptitud.DeviationReporter.UnitTests
             // Arrange
 
             // Act
-             _controllerUndertest.PostDeviation(new[] { TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME) });
+            _controllerUndertest.PostDeviation(new[] { TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME) });
 
             // Assert
             Deviation deviationFromDb = _db.Deviations.FindByReporter(TestData.TEST_REPORTER_NAME);
@@ -65,7 +64,7 @@ namespace Aptitud.DeviationReporter.UnitTests
 
         [Test]
         public void GetDeviation_should_return_all_deviations()
-        { 
+        {
             //Arrange
             InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
             InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
@@ -79,6 +78,46 @@ namespace Aptitud.DeviationReporter.UnitTests
 
             //Assert
             Assert.AreEqual(6, result.Count());
+        }
+
+        [Test]
+        public void GetDefaultHoursForDeviationType_VAB_should_return_8()
+        {
+            //Act
+            var result = _controllerUndertest.GetDefaultHoursForDeviationType("VAB");
+
+            //Assert
+            Assert.AreEqual(8.0, result);
+        }
+
+        [Test]
+        public void GetDefaultHoursForDeviationType_SJUK_should_return_8()
+        {
+            //Act
+            var result = _controllerUndertest.GetDefaultHoursForDeviationType("SJUK");
+
+            //Assert
+            Assert.AreEqual(8.0, result);
+        }
+
+        [Test]
+        public void GetDefaultHoursForDeviationType_SEMESTER_should_return_8()
+        {
+            //Act
+            var result = _controllerUndertest.GetDefaultHoursForDeviationType("SEMESTER");
+
+            //Assert
+            Assert.AreEqual(8.0, result);
+        }
+
+        [Test]
+        public void GetDefaultHoursForDeviationType_FLEX_should_return_0()
+        {
+            //Act
+            var result = _controllerUndertest.GetDefaultHoursForDeviationType("FLEX");
+
+            //Assert
+            Assert.AreEqual(0.0, result);
         }
     }
 }
