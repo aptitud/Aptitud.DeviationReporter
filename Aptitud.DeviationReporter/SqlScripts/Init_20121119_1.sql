@@ -32,4 +32,31 @@ GO
 SET ANSI_PADDING OFF
 GO
 
+/****** Object:  Table [dbo].[Reporters]    Script Date: 02/01/2013 13:36:25 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Reporters]') AND type in (N'U'))
+DROP TABLE [dbo].[Reporters]
+GO
+
+/****** Object:  Table [dbo].[Reporters]    Script Date: 02/01/2013 13:36:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[Reporters](
+	[Id] [varchar](100) NOT NULL,
+ CONSTRAINT [PK_Reporters] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
 
