@@ -138,20 +138,18 @@
         function updateEnableDisable(event, ui) {
             var reporter = $("#username-choice").val();
             if (reporter == "") {
-                $("#adddeviation").attr("enabled", false);
-                $("#senddeviation").attr("enabled", false);
-                $("#generateCSV").attr("enabled", false);
-                $("#adddeviation").addClass("ui-disabled");
-                $("#senddeviation").addClass("ui-disabled");
-                $("#generateCSV").addClass("ui-disabled");
+                $("[data-role=button]").attr("enabled", false);
+                $("[data-role=button]").addClass("ui-disabled");
+                $("input:button").button('disable');
+                $("input:radio").checkboxradio('disable');
+                $("input[name=deviationDate]").datebox('disable');
             }
             else {
-                $("#adddeviation").removeAttr("enabled");
-                $("#senddeviation").removeAttr("enabled");
-                $("#generateCSV").removeAttr("enabled");
-                $("#adddeviation").removeClass("ui-disabled");
-                $("#senddeviation").removeClass("ui-disabled");
-                $("#generateCSV").removeClass("ui-disabled");
+                $("[data-role=button]").removeAttr("enabled");
+                $("[data-role=button]").removeClass("ui-disabled");
+                $("input:button").button('enable');
+                $("input:radio").checkboxradio('enable');
+                $("input[name=deviationDate]").datebox('enable');
             }
         }
 
