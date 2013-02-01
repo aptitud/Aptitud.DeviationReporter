@@ -24,7 +24,7 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Reporter> GetReporters()
         {
-            return new List<Reporter>();
+            return new List<Reporter>(){new Reporter(){Id = "Kalle"}, new Reporter(){Id = "Anka"}};
         }
     }
 }
