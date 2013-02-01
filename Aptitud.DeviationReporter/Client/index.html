@@ -14,6 +14,7 @@
     <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 
     <script src="js/json2.js"></script>
+    <script src="../Scripts/deviationReporter.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/jquery.mousewheel.min.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.core.min.js"></script>
     <script type="text/javascript" src="http://dev.jtsage.com/cdn/datebox/latest/jqm-datebox.mode.slidebox.min.js"></script>
@@ -81,31 +82,12 @@
         </div>
     </div>
     <script type="text/javascript">
-
-        function updateDeviationHours(val) {
-            var deviationHours = $('#deviationHours');
-            var current = parseFloat(deviationHours.val(), 10);
-            var result = current + val;
-
-
-            if (result < deviationTypeDefaults.MinimumHours) {
-                result = deviationTypeDefaults.MinimumHours;
-            }
-
-            if (result > deviationTypeDefaults.MaximumHours) {
-                result = deviationTypeDefaults.MaximumHours;
-            }
-
-            deviationHours.val(result);
-        }
-
-        var deviationTypeDefaults;
         var rapport = new Object();
         rapport.avvikelser = new Array();
 
         $('#addpage').live('pageinit', function (event) {
 
-            getReporters();
+            //Aptitud.DeviationReporter.getReporters();
 
             var date = new Date();
             $("#deviationDate").val(dateFormat(new Date(), "YYYY-MM-DD"));
@@ -120,76 +102,19 @@
             });
 
             $("#senddeviation").hide();
-            $("input:radio[name=deviationType]").click(function () { updateDefaultHoursForDeviationType(); });
-            $('#subOneHour').click(function () { updateDeviationHours(-1); });
-            $('#subHalfHour').click(function () { updateDeviationHours(-0.5); });
-            $('#subQuarter').click(function () { updateDeviationHours(-0.25); });
-            $('#addQuarter').click(function () { updateDeviationHours(0.25); });
-            $('#addHalfHour').click(function () { updateDeviationHours(0.5); });
-            $('#addOneHour').click(function () { updateDeviationHours(1); });
-            updateDefaultHoursForDeviationType();
+            $("input:radio[name=deviationType]").click(function () { Aptitud.DeviationReporter.updateDefaultHoursForDeviationType(); });
+            $('#subOneHour').click(function () { Aptitud.DeviationReporter.updateDeviationHours(-1); });
+            $('#subHalfHour').click(function () { Aptitud.DeviationReporter.updateDeviationHours(-0.5); });
+            $('#subQuarter').click(function () { Aptitud.DeviationReporter.updateDeviationHours(-0.25); });
+            $('#addQuarter').click(function () { Aptitud.DeviationReporter.updateDeviationHours(0.25); });
+            $('#addHalfHour').click(function () { Aptitud.DeviationReporter.updateDeviationHours(0.5); });
+            $('#addOneHour').click(function () { Aptitud.DeviationReporter.updateDeviationHours(1); });
+
+            Aptitud.DeviationReporter.updateDefaultHoursForDeviationType();
         });
 
-        function getReporters() {
-            $.ajax({
-                url: "/api/reporter",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (data) {
-                    $.each(data, function(index, element) {
-                        $("#username-choice").append("<option value = " + element.Id + ">" + element.Id + "</option>");
-                    });
-                },
-                error: function (msg) {
-                    alert('An error occurred trying to get reporters.');
-                }
-            });
-        }
-
-        function updateDefaultHoursForDeviationType() {
-            var deviationType = $("input:radio[name=deviationType]:checked").val();
-            var deviationHours = $('#deviationHours');
-            $.ajax({
-                url: "/api/deviation?deviationType=" + deviationType,
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (data) {
-                    deviationTypeDefaults = data;
-                    deviationHours.val(deviationTypeDefaults.DefaultHours);
-                },
-                error: function (msg) {
-                    alert('Failed ' + msg);
-                    deviationTypeDefaults.DefaultHours = 8.0;
-                    deviationTypeDefaults.MaximumHours = 8.0;
-                    deviationTypeDefaults.MinimumHours = 0.0;
-                    deviationHours.val(8.0);
-                }
-            });
-        }
-
         $("#generateCSV").click(function () {
-            $.ajax({
-                url: "/api/deviation/",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (data) {
-                    var csvdata = "data:application/octet-stream,";
-                    $.each(data, function (index, element) {
-                        var numstr = new String(element.Duration).replace(":00:00", "");
-                        csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
-                    });
-                    window.location = encodeURI(csvdata);
-                },
-                error: function (msg) {
-                    alert('Failed ' + msg);
-                }
-            });
+            Aptitud.DeviationReporter.generateCSV();
         });
 
         $("#senddeviation").click(function () {
