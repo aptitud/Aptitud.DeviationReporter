@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Page Title</title>
+    <title>Undantagsrapportering</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -120,7 +120,8 @@
                     return out.val();
                 }
             });
-
+            
+            $("#username-choice").on("change", function (event, ui) { updateEnableDisable(event, ui); });
             $("#senddeviation").hide();
             $("input:radio[name=deviationType]").click(function () { updateDefaultHoursForDeviationType(); });
             $('#subOneHour').click(function () { updateDeviationHours(-1); });
@@ -129,8 +130,30 @@
             $('#addQuarter').click(function () { updateDeviationHours(0.25); });
             $('#addHalfHour').click(function () { updateDeviationHours(0.5); });
             $('#addOneHour').click(function () { updateDeviationHours(1); });
+
             updateDefaultHoursForDeviationType();
+            updateEnableDisable();
         });
+
+        function updateEnableDisable(event, ui) {
+            var reporter = $("#username-choice").val();
+            if (reporter == "") {
+                $("#adddeviation").attr("enabled", false);
+                $("#senddeviation").attr("enabled", false);
+                $("#generateCSV").attr("enabled", false);
+                $("#adddeviation").addClass("ui-disabled");
+                $("#senddeviation").addClass("ui-disabled");
+                $("#generateCSV").addClass("ui-disabled");
+            }
+            else {
+                $("#adddeviation").removeAttr("enabled");
+                $("#senddeviation").removeAttr("enabled");
+                $("#generateCSV").removeAttr("enabled");
+                $("#adddeviation").removeClass("ui-disabled");
+                $("#senddeviation").removeClass("ui-disabled");
+                $("#generateCSV").removeClass("ui-disabled");
+            }
+        }
 
         function getReporters() {
             $.ajax({
