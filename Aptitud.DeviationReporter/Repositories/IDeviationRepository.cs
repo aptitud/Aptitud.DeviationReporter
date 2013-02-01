@@ -11,5 +11,6 @@ namespace Aptitud.DeviationReporter.Repositories
         IEnumerable<Deviation> GetDeviationByReporterName(string reporterName);
         IEnumerable<Deviation> GetDeviations();
         void AddDeviations(IEnumerable<Deviation> deviations);
+        IEnumerable<Reporter> GetReporters();
     }
 }

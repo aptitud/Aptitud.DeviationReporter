@@ -63,6 +63,7 @@
     <Compile Include="DeviationControllerTests.cs" />
     <Compile Include="InMemoryDeviationRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReporterControllerTests.cs" />
     <Compile Include="SQLServerDeviationRepositoryTests.cs" />
     <Compile Include="TestData.cs" />
     <Compile Include="TimeSpanTrickeryUnitTests.cs" />

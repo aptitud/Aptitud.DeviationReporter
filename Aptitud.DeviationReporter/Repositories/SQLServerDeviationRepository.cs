@@ -32,10 +32,15 @@ namespace Aptitud.DeviationReporter.Repositories
                 db.Deviations.Insert(d);
         }
 
+        public IEnumerable<Reporter> GetReporters()
+        {
+            var result = db.Reporters.All().ToList<Reporter>();
+            return result;
+        }
+
         public IEnumerable<Deviation> GetDeviations()
         {
             var result = db.Deviations.All().ToList<Deviation>();
-
             return result;
         }
     }

@@ -1,9 +1,6 @@
-﻿using System;
+﻿using Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Simple.Data;
-using Models;
 
 namespace Aptitud.DeviationReporter.Repositories
 {
@@ -22,7 +19,12 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Deviation> GetDeviations()
         {
-            throw new NotImplementedException();
+            return deviations;
         }
-    }    
+
+        public IEnumerable<Reporter> GetReporters()
+        {
+            return new List<Reporter>();
+        }
+    }
 }
