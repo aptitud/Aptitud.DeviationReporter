@@ -81,29 +81,25 @@
         </div>
     </div>
     <script type="text/javascript">
-        $('#subOneHour').click(function () { updateDeviationHours(-1); });
-        $('#subHalfHour').click(function () { updateDeviationHours(-0.5); });
-        $('#subQuarter').click(function () { updateDeviationHours(-0.25); });
-        $('#addQuarter').click(function () { updateDeviationHours(0.25); });
-        $('#addHalfHour').click(function () { updateDeviationHours(0.5); });
-        $('#addOneHour').click(function () { updateDeviationHours(1); });
 
         function updateDeviationHours(val) {
             var deviationHours = $('#deviationHours');
             var current = parseFloat(deviationHours.val(), 10);
             var result = current + val;
 
-            if (result < -8) {
-                result = -8;
+
+            if (result < deviationTypeDefaults.MinimumHours) {
+                result = deviationTypeDefaults.MinimumHours;
             }
 
-            if (result > 8) {
-                result = 8;
+            if (result > deviationTypeDefaults.MaximumHours) {
+                result = deviationTypeDefaults.MaximumHours;
             }
 
             deviationHours.val(result);
         }
 
+        var deviationTypeDefaults;
         var rapport = new Object();
         rapport.avvikelser = new Array();
 
@@ -122,6 +118,12 @@
 
             $("#senddeviation").hide();
             $("input:radio[name=deviationType]").click(function () { updateDefaultHoursForDeviationType(); });
+            $('#subOneHour').click(function () { updateDeviationHours(-1); });
+            $('#subHalfHour').click(function () { updateDeviationHours(-0.5); });
+            $('#subQuarter').click(function () { updateDeviationHours(-0.25); });
+            $('#addQuarter').click(function () { updateDeviationHours(0.25); });
+            $('#addHalfHour').click(function () { updateDeviationHours(0.5); });
+            $('#addOneHour').click(function () { updateDeviationHours(1); });
             updateDefaultHoursForDeviationType();
         });
 
@@ -135,10 +137,14 @@
                 dataType: "json",
                 processdata: true,
                 success: function (data) {
-                    deviationHours.val(data);
+                    deviationTypeDefaults = data;
+                    deviationHours.val(deviationTypeDefaults.DefaultHours);
                 },
                 error: function (msg) {
                     alert('Failed ' + msg);
+                    deviationTypeDefaults.DefaultHours = 8.0;
+                    deviationTypeDefaults.MaximumHours = 8.0;
+                    deviationTypeDefaults.MinimumHours = 0.0;
                     deviationHours.val(8.0);
                 }
             });

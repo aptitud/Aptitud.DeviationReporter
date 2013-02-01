@@ -1,4 +1,5 @@
 ﻿using Aptitud.DeviationReporter.Controllers;
+using Aptitud.DeviationReporter.Models;
 using Aptitud.DeviationReporter.Repositories;
 using Models;
 using NUnit.Framework;
@@ -81,43 +82,55 @@ namespace Aptitud.DeviationReporter.UnitTests
         }
 
         [Test]
-        public void GetDefaultHoursForDeviationType_VAB_should_return_8()
+        public void GetDefaultsForDeviationType_VAB_should_return_defaults_for_VAB()
         {
+            //Arrange
+            var expected = DeviationTypeDefaults.Factory.CreateDefault("vab");
+
             //Act
-            var result = _controllerUndertest.GetDefaultHoursForDeviationType("VAB");
+            var actual = _controllerUndertest.GetDefaultsForDeviationType("vab");
 
             //Assert
-            Assert.AreEqual(8.0, result);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetDefaultHoursForDeviationType_SJUK_should_return_8()
+        public void GetDefaultsForDeviationType_SJUK_should_return_defaults_for_SJUK()
         {
+            //Arrange
+            var expected = DeviationTypeDefaults.Factory.CreateDefault("sjuk");
+
             //Act
-            var result = _controllerUndertest.GetDefaultHoursForDeviationType("SJUK");
+            var actual = _controllerUndertest.GetDefaultsForDeviationType("sjuk");
 
             //Assert
-            Assert.AreEqual(8.0, result);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetDefaultHoursForDeviationType_SEMESTER_should_return_8()
+        public void GetDefaultsForDeviationType_SEMESTER_should_return_defaults_for_SEMESTER()
         {
+            //Arrange
+            var expected = DeviationTypeDefaults.Factory.CreateDefault("semester");
+
             //Act
-            var result = _controllerUndertest.GetDefaultHoursForDeviationType("SEMESTER");
+            var actual = _controllerUndertest.GetDefaultsForDeviationType("semester");
 
             //Assert
-            Assert.AreEqual(8.0, result);
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void GetDefaultHoursForDeviationType_FLEX_should_return_0()
+        public void GetDefaultsForDeviationType_FLEX_should_return_defaults_for_FLEX()
         {
+            //Arrange
+            var expected = DeviationTypeDefaults.Factory.CreateDefault("flex");
+
             //Act
-            var result = _controllerUndertest.GetDefaultHoursForDeviationType("FLEX");
+            var actual = _controllerUndertest.GetDefaultsForDeviationType("flex");
 
             //Assert
-            Assert.AreEqual(0.0, result);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

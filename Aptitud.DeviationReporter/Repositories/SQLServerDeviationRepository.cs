@@ -21,7 +21,7 @@ namespace Aptitud.DeviationReporter.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Models.Deviation> GetDeviationByReporterName(string reporterName)
+        public IEnumerable<Deviation> GetDeviationByReporterName(string reporterName)
         {
             return db.Deviations.FindAllByReporter(reporterName);
         }

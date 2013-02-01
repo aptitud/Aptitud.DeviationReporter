@@ -152,6 +152,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeviationTypeDefaults.cs" />
     <Compile Include="Models\Deviation.cs" />
     <Compile Include="Models\Reporter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
