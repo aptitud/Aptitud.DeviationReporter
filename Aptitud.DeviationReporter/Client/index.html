@@ -150,6 +150,7 @@
             $.ajax({
                 url: "/api/deviation/",
                 type: "POST",
+                async: false,
                 data: JSON.stringify(rapport.avvikelser),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
