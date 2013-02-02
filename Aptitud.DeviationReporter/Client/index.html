@@ -203,7 +203,7 @@
                 processdata: true,
                 success: function (data) {
                     var csvdata = "data:application/octet-stream,";
-                    $.each(data, function (index, element) {
+                    $.each(data, function (index, element){
                         var numstr = new String(element.Duration).replace(":00:00", "");
                         csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
                     });
@@ -216,7 +216,7 @@
         });
 
         $("#senddeviation").click(function () {
-            rapport.name = $("#username").val();
+            rapport.name = $("#username-choice option:selected").val()
             //alert(JSON.stringify(rapport));
             $.ajax({
                 url: "/api/deviation/",
@@ -237,7 +237,7 @@
 
         $("#adddeviation").click(function () {
             var deviation = new Object();
-            deviation.Reporter = $("#username").val();
+            deviation.Reporter = $("#username-choice option:selected").val();
             deviation.DeviationType = $("input:radio[name=deviationType]:checked").val();
             deviation.ReportDate = $("#deviationDate").val();
             deviation.Duration = $("#deviationHours").val();
