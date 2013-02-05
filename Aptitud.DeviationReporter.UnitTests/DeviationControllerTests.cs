@@ -33,24 +33,6 @@ namespace Aptitud.DeviationReporter.UnitTests
         }
 
         [Test]
-        public void GetDeviationByReporter_should_return_a_list_for_the_reporter()
-        {
-            // Arrange
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
-
-            // Act
-            var result = _controllerUndertest.GetDeviationByReporter(TestData.TEST_REPORTER_NAME);
-
-            // Assert
-            result.Count().Should().Equal(2);
-        }
-
-        [Test]
         public void PostDeviation_should_add_a_deviation_to_the_repository()
         {
             // Arrange

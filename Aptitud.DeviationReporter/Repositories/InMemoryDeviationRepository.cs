@@ -1,17 +1,12 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Aptitud.DeviationReporter.Repositories
 {
     public class InMemoryDeviationRepository : IDeviationRepository
     {
         private List<Deviation> deviations = new List<Deviation>();
-        public IEnumerable<Deviation> GetDeviationByReporterName(string reporterName)
-        {
-            return deviations.Where(d => d.Reporter == reporterName);
-        }
 
         public void AddDeviations(IEnumerable<Deviation> deviations)
         {
@@ -30,9 +25,12 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Deviation> GetCurrentDeviations(string reporterName)
         {
-            return deviations.Where(d => d.Reporter == reporterName
-                        && d.ReportDate.Year == DateTime.Now.Year
-                        && d.ReportDate.Month == DateTime.Now.Month);
+            var results = new List<Deviation>();
+            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "VAB", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "SJUK", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "SEMESTER", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+
+            return results;
 
         }
     }

@@ -70,8 +70,7 @@
 
             <a href="" id="adddeviation" data-role="button">Lägg till</a>
 
-            <ul data-role="listview" id="deviationList" data-divider-theme="b" data-autodividers="true" data-inset="true">
-                <li data-role="list-divider" id="deviationListHeader">Avvikelser</li>
+            <ul data-role="listview" id="deviationList" data-divider-theme="b" data-inset="true">
             </ul>
 
             <a href="" data-role="button" data-theme="b" id="senddeviation">Skicka</a>
@@ -79,7 +78,6 @@
         </div>
     </div>
     <script type="text/javascript">
-
         function updateDeviationHours(val) {
             var deviationHours = $('#deviationHours');
             var current = parseFloat(deviationHours.val(), 10);
@@ -151,7 +149,29 @@
                 $("input:button").button('enable');
                 $("input:radio").checkboxradio('enable');
                 $("input[name=deviationDate]").datebox('enable');
+
+                getCurrentDeviationsForReporter();
             }
+        }
+
+        function getCurrentDeviationsForReporter() {
+            var reporter = $("#username-choice option:selected").val();
+            $.ajax({
+                url: "/api/deviation?reporterName=" + reporter,
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                processdata: true,
+                success: function (data) {
+                    $.each(data, function (index, element) {
+                        rapport.avvikelser.push(element);
+                        addDeviation(element);
+                    });
+                },
+                error: function (msg) {
+                    alert('An error occurred trying to get deviations for reporter.');
+                }
+            });
         }
 
         function getReporters() {
@@ -172,98 +192,98 @@
             });
         }
 
-        function updateDefaultHoursForDeviationType() {
-            var deviationType = $("input:radio[name=deviationType]:checked").val();
-            var deviationHours = $('#deviationHours');
-            $.ajax({
-                url: "/api/deviation?deviationType=" + deviationType,
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (data) {
-                    deviationTypeDefaults = data;
-                    deviationHours.val(deviationTypeDefaults.DefaultHours);
-                },
-                error: function (msg) {
-                    alert('Failed ' + msg);
-                    deviationTypeDefaults.DefaultHours = 8.0;
-                    deviationTypeDefaults.MaximumHours = 8.0;
-                    deviationTypeDefaults.MinimumHours = 0.0;
-                    deviationHours.val(8.0);
-                }
+            function updateDefaultHoursForDeviationType() {
+                var deviationType = $("input:radio[name=deviationType]:checked").val();
+                var deviationHours = $('#deviationHours');
+                $.ajax({
+                    url: "/api/deviation?deviationType=" + deviationType,
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    processdata: true,
+                    success: function (data) {
+                        deviationTypeDefaults = data;
+                        deviationHours.val(deviationTypeDefaults.DefaultHours);
+                    },
+                    error: function (msg) {
+                        alert('Failed ' + msg);
+                        deviationTypeDefaults.DefaultHours = 8.0;
+                        deviationTypeDefaults.MaximumHours = 8.0;
+                        deviationTypeDefaults.MinimumHours = 0.0;
+                        deviationHours.val(8.0);
+                    }
+                });
+            }
+
+            $("#generateCSV").click(function () {
+                $.ajax({
+                    url: "/api/deviation/",
+                    type: "GET",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    processdata: true,
+                    success: function (data) {
+                        var csvdata = "data:application/octet-stream,";
+                        $.each(data, function (index, element){
+                            var numstr = new String(element.Duration).replace(":00:00", "");
+                            csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
+                        });
+                        window.location = encodeURI(csvdata);
+                    },
+                    error: function (msg) {
+                        alert('Failed ' + msg);
+                    }
+                });
             });
-        }
 
-        $("#generateCSV").click(function () {
-            $.ajax({
-                url: "/api/deviation/",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (data) {
-                    var csvdata = "data:application/octet-stream,";
-                    $.each(data, function (index, element){
-                        var numstr = new String(element.Duration).replace(":00:00", "");
-                        csvdata += element.Reporter + ";" + element.DeviationType + ";" + dateFormat(new Date(element.ReportDate), "YYYYMMDD") + ";" + numstr + ";\r\n";
-                    });
-                    window.location = encodeURI(csvdata);
-                },
-                error: function (msg) {
-                    alert('Failed ' + msg);
-                }
+            $("#senddeviation").click(function () {
+                rapport.name = $("#username-choice option:selected").val()
+                //alert(JSON.stringify(rapport));
+                $.ajax({
+                    url: "/api/deviation/",
+                    type: "POST",
+                    async: false,
+                    data: JSON.stringify(rapport.avvikelser),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    processdata: true,
+                    success: function (msg) {
+                        alert('Avvikelse sparad');
+                    },
+                    error: function (msg) {
+                        alert('Failed ' + msg);
+                    }
+                });
             });
-        });
 
-        $("#senddeviation").click(function () {
-            rapport.name = $("#username-choice option:selected").val()
-            //alert(JSON.stringify(rapport));
-            $.ajax({
-                url: "/api/deviation/",
-                type: "POST",
-                async: false,
-                data: JSON.stringify(rapport.avvikelser),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                processdata: true,
-                success: function (msg) {
-                    alert('Avvikelse sparad');
-                },
-                error: function (msg) {
-                    alert('Failed ' + msg);
-                }
+            $("#adddeviation").click(function () {
+                var deviation = new Object();
+                deviation.Reporter = $("#username-choice option:selected").val();
+                deviation.DeviationType = $("input:radio[name=deviationType]:checked").val();
+                deviation.ReportDate = $("#deviationDate").val();
+                deviation.Duration = $("#deviationHours").val();
+                rapport.avvikelser.push(deviation);
+                addDeviation(deviation);
+                $("#senddeviation").show();
             });
-        });
 
-        $("#adddeviation").click(function () {
-            var deviation = new Object();
-            deviation.Reporter = $("#username-choice option:selected").val();
-            deviation.DeviationType = $("input:radio[name=deviationType]:checked").val();
-            deviation.ReportDate = $("#deviationDate").val();
-            deviation.Duration = $("#deviationHours").val();
-            rapport.avvikelser.push(deviation);
-            addDeviation(deviation);
-            $("#senddeviation").show();
-        });
+            function addDeviation(deviation) {
+                $("#deviationList").append(
+                    "<li>" +
+                        "<input type='hidden' value='" + deviation.DeviationType + "'/>" +
+                        "<p>" +
+                            "<strong>" + dateFormat(new Date(deviation.ReportDate), "YYYY-MM-DD") + "</strong>" +
+                        "</p>" +
+                        "<span class='ui-li-count'>" + parseInt(deviation.Duration) + "</span></li>"
+                ).listview('refresh');
+            }
 
-        function addDeviation(deviation) {
-            $("#deviationList").append(
-                "<li>" +
-                    "<input type='hidden' value='" + deviation.DeviationType + "'/>" +
-                    "<p>" +
-                        "<strong>" + deviation.ReportDate + "</strong>" +
-                    "</p>" +
-                    "<span class='ui-li-count'>" + deviation.Duration + "</span></li>"
-            ).listview('refresh');
-        }
-
-        function dateFormat(date, format) {
-            format = format.replace("DD", (date.getDate() < 10 ? '0' : '') + date.getDate());
-            format = format.replace("MM", (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1));
-            format = format.replace("YYYY", date.getFullYear());
-            return format;
-        }
+            function dateFormat(date, format) {
+                format = format.replace("DD", (date.getDate() < 10 ? '0' : '') + date.getDate());
+                format = format.replace("MM", (date.getMonth() < 9 ? '0' : '') + (date.getMonth() + 1));
+                format = format.replace("YYYY", date.getFullYear());
+                return format;
+            }
 
     </script>
 </body>

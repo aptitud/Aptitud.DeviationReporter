@@ -19,11 +19,6 @@ namespace Aptitud.DeviationReporter.Repositories
             this.db = db;
         }
 
-        public IEnumerable<Deviation> GetDeviationByReporterName(string reporterName)
-        {
-            return db.Deviations.FindAllByReporter(reporterName);
-        }
-
         public void AddDeviations(IEnumerable<Deviation> deviations)
         {
             foreach (var d in deviations)

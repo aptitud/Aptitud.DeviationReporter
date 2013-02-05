@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Aptitud.DeviationReporter.Repositories;
-using NUnit.Framework;
-using Simple.Data;
-using Should.Fluent;
+﻿using Aptitud.DeviationReporter.Repositories;
 using Models;
-using System.Linq;
+using NUnit.Framework;
+using Should.Fluent;
+using Simple.Data;
 
 namespace Aptitud.DeviationReporter.UnitTests
 {
@@ -43,25 +40,6 @@ namespace Aptitud.DeviationReporter.UnitTests
 
             // Assert
             NumberOfDeviationsInDB().Should().Equal(1);
-        }
-
-        [Test]
-        public void GetDeviationByReporterName_should_return_only_the_reports_with_the_reportername_from_the_db()
-        {
-            // Arrange
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "1"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
-            InsertDeviationInDB(TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME + "2"));
-
-            // Act
-            var deviations = repo.GetDeviationByReporterName(TestData.TEST_REPORTER_NAME);
-
-            // Arrange
-            deviations.Count().Should().Equal(2);
-            
         }
     }
 }

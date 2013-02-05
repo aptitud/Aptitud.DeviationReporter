@@ -5,7 +5,6 @@ namespace Aptitud.DeviationReporter.Repositories
 {
     public interface IDeviationRepository
     {
-        IEnumerable<Deviation> GetDeviationByReporterName(string reporterName);
         IEnumerable<Deviation> GetDeviations();
         void AddDeviations(IEnumerable<Deviation> deviations);
         IEnumerable<Reporter> GetReporters();

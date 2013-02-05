@@ -15,12 +15,6 @@ namespace Aptitud.DeviationReporter.Controllers
             repository = repo;
         }
 
-        // GET api/deviation
-        public IEnumerable<Deviation> GetDeviationByReporter(string reporterName)
-        {
-            return repository.GetDeviationByReporterName(reporterName);
-        }
-
         // POST api/deviation
         public void PostDeviation(IEnumerable<Deviation> value)
         {
