@@ -59,7 +59,7 @@
                 data-options='{"mode":"slidebox", "useNewStyle":true}' />
 
             <div>
-                <input name="deviationHours" id="deviationHours" type="number" value="8" pattern="[0-9]+" data-theme="a" disabled="true" />
+                <input name="deviationHours" id="deviationHours" type="text" value="8" data-theme="a" disabled="true"/>
                 <input name="subOneHour" id="subOneHour" type="button" data-theme="b" value="1" data-inline="true" data-mini="true"/>
                 <input name="subHalfHour" id="subHalfHour" type="button" data-theme="b" value="½" data-inline="true" data-mini="true"/>
                 <input name="subQuarter" id="subQuarter" type="button" data-theme="b" value="¼" data-inline="true" data-mini="true"/>
@@ -126,7 +126,12 @@
             $('#addQuarter').click(function () { updateDeviationHours(0.25); });
             $('#addHalfHour').click(function () { updateDeviationHours(0.5); });
             $('#addOneHour').click(function () { updateDeviationHours(1); });
-
+            $('#deviationHours').addClass("ui-state-enabled");
+            $('#deviationHours').addClass("ui-enabled");
+            $('#deviationHours').addClass("mobile-textinput-enabled");
+            $('#deviationHours').removeClass("ui-state-disabled");
+            $('#deviationHours').removeClass("ui-disabled");
+            $('#deviationHours').removeClass("mobile-textinput-disabled");
             updateDefaultHoursForDeviationType();
             updateEnableDisable();
         });
