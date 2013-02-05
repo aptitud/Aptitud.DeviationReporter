@@ -48,5 +48,10 @@ namespace Aptitud.DeviationReporter.Controllers
         {
             return DeviationTypeDefaults.Factory.CreateDefault(deviationType);
         }
+
+        public IEnumerable<Deviation> GetCurrentMonthDeviationsByReporter(string reporterName)
+        {
+            return repository.GetCurrentDeviations(reporterName);
+        }
     }
 }

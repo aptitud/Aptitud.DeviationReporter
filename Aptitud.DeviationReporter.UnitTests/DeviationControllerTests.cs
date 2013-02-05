@@ -5,6 +5,7 @@ using Models;
 using NUnit.Framework;
 using Should.Fluent;
 using Simple.Data;
+using System;
 using System.Linq;
 
 namespace Aptitud.DeviationReporter.UnitTests
@@ -131,6 +132,30 @@ namespace Aptitud.DeviationReporter.UnitTests
 
             //Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void GetCurrentDeviationsByReporter()
+        {
+            // Arrange
+            // Add some deviations for reporter
+            InsertDeviationInDB(TestData.BuildTestDeviation(
+                        TestData.TEST_REPORTER_NAME, 
+                        DateTime.Now.AddMonths(-1)));
+            var d = TestData.BuildTestDeviation(TestData.TEST_REPORTER_NAME);
+            InsertDeviationInDB(d);
+            InsertDeviationInDB(TestData.BuildTestDeviation(
+                        TestData.TEST_REPORTER_NAME,
+                        DateTime.Now.AddMonths(1)));
+
+            // Get Current Deviations
+            var deviationsFromDB = _controllerUndertest
+                    .GetCurrentMonthDeviationsByReporter(TestData.TEST_REPORTER_NAME);
+        
+            // Assert
+            deviationsFromDB.Count().Should().Equal(1);
+            deviationsFromDB.Single().ReportDate.Month.Should()
+                .Equal(DateTime.Now.Month);
         }
     }
 }

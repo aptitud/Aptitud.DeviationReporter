@@ -1,4 +1,5 @@
 ﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,7 +25,15 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Reporter> GetReporters()
         {
-            return new List<Reporter>(){new Reporter(){Id = "Kalle"}, new Reporter(){Id = "Anka"}};
+            return new List<Reporter>() { new Reporter() { Id = "Kalle" }, new Reporter() { Id = "Anka" } };
+        }
+
+        public IEnumerable<Deviation> GetCurrentDeviations(string reporterName)
+        {
+            return deviations.Where(d => d.Reporter == reporterName
+                        && d.ReportDate.Year == DateTime.Now.Year
+                        && d.ReportDate.Month == DateTime.Now.Month);
+
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Aptitud.DeviationReporter.Repositories
 {
@@ -12,5 +9,6 @@ namespace Aptitud.DeviationReporter.Repositories
         IEnumerable<Deviation> GetDeviations();
         void AddDeviations(IEnumerable<Deviation> deviations);
         IEnumerable<Reporter> GetReporters();
+        IEnumerable<Deviation> GetCurrentDeviations(string reporterName);
     }
 }

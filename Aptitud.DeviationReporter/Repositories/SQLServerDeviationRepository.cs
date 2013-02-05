@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Simple.Data;
-using Models;
 
 namespace Aptitud.DeviationReporter.Repositories
 {
@@ -42,6 +40,15 @@ namespace Aptitud.DeviationReporter.Repositories
         {
             var result = db.Deviations.All().ToList<Deviation>();
             return result;
+        }
+
+        public IEnumerable<Deviation> GetCurrentDeviations(string reporterName)
+        {
+            IEnumerable<Deviation> result = db.Deviations.All().ToList<Deviation>();
+
+            return result.Where(d => d.Reporter == reporterName
+                        && d.ReportDate.Year == DateTime.Now.Year
+                        && d.ReportDate.Month == DateTime.Now.Month);
         }
     }
 }
