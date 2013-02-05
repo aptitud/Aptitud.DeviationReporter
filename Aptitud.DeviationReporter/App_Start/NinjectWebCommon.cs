@@ -61,7 +61,11 @@ namespace Aptitud.DeviationReporter.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+#if DEBUG
+            kernel.Bind<IDeviationRepository>().To<InMemoryDeviationRepository>();
+#else
             kernel.Bind<IDeviationRepository>().To<SQLServerDeviationRepository>();
+#endif
         }
     }
 
