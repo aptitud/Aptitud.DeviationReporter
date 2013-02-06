@@ -40,23 +40,23 @@
             </div>
             <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
                 <input type="radio" name="deviationType" id="deviationTypeVab"
-                    value="VAB" checked="checked" />
+                       value="VAB" checked="checked" />
                 <label for="deviationTypeVab">VAB</label>
                 <input type="radio" name="deviationType" id="deviationTypeSjuk"
-                    value="SJUK" />
+                       value="SJUK" />
                 <label for="deviationTypeSjuk">Sjuk</label>
                 <input
                     type="radio" name="deviationType" id="deviationTypeSemester"
                     value="SEMESTER" />
                 <label for="deviationTypeSemester">Semester</label>
                 <input type="radio" name="deviationType" id="deviationTypeDeviation"
-                    value="FLEX" />
+                       value="FLEX" />
                 <label for="deviationTypeDeviation">Flex</label>
             </fieldset>
 
             <input name="deviationDate" id="deviationDate" type="text" data-theme="c"
-                data-role="datebox"
-                data-options='{"mode":"slidebox", "useNewStyle":true}' />
+                   data-role="datebox"
+                   data-options='{"mode":"slidebox", "useNewStyle":true}' />
 
             <div>
                 <input name="deviationHours" id="deviationHours" type="text" value="8" data-theme="a" disabled="true"/>
@@ -70,12 +70,17 @@
 
             <a href="" id="adddeviation" data-role="button">Lägg till</a>
 
-            <ul data-role="listview" id="deviationList" data-divider-theme="b" data-inset="true">
+            <ul data-role="listview" id="deviationList" data-divider-theme="b" data-inset="true" data-split-icon="delete">
             </ul>
 
             <a href="" data-role="button" data-theme="b" id="senddeviation">Skicka</a>
             <a href="" id="generateCSV" data-role="button">Hämta rapport</a>
         </div>
+        <div data-role="popup" id="delete" data-theme="a" data-overlay-theme="b" class="ui-content" style="max-width:340px;">
+			<h3>Delete Deviation?</h3>
+			<a href="index.html" data-role="button" data-rel="back" data-icon="check" data-inline="true" data-mini="true">Ok</a>
+			<a href="index.html" data-role="button" data-rel="back" data-inline="true" data-mini="true">Cancel</a>	
+		</div>
     </div>
     <script type="text/javascript">
         function updateDeviationHours(val) {
@@ -273,13 +278,11 @@
             function addDeviation(deviation) {
                 $("#deviationList").append(
                     "<li>" +
-                        //"<input type='hidden' value='" + deviation.DeviationType + "'/>" +
-                        "<p>" +
-                            "<strong>" + dateFormat(new Date(deviation.ReportDate), "YYYY-MM-DD") + "</strong>" +
-                        "</p>" +
-                        "<p>" + deviation.DeviationType  +
-                        "</p>" +
-                        "<span class='ui-li-count'>" + parseInt(deviation.Duration) + "</span></li>"
+                        "<a href='#'>" +
+                        "<p><strong>" + dateFormat(new Date(deviation.ReportDate), "YYYY-MM-DD") + "</strong></p>" +
+                        "<p>" + deviation.DeviationType  + "</p>" +
+                        "<span class='ui-li-count'>" + parseInt(deviation.Duration) + "</span></a>" +
+                        "<a href='#delete' data-theme='a' data-rel='popup' data-position-to='window' data-transition='pop'></a></li>"
                 ).listview('refresh');
             }
 
