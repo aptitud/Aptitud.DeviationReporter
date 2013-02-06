@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using System.Linq;
+using Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,6 +8,14 @@ namespace Aptitud.DeviationReporter.Repositories
     public class InMemoryDeviationRepository : IDeviationRepository
     {
         private List<Deviation> deviations = new List<Deviation>();
+
+        public InMemoryDeviationRepository()
+        {
+            deviations.Add(new Deviation() { Reporter = "Kalle", DeviationType = "VAB", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+            deviations.Add(new Deviation() { Reporter = "Kalle", DeviationType = "SJUK", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+            deviations.Add(new Deviation() { Reporter = "Kalle", DeviationType = "SEMESTER", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+            deviations.Add(new Deviation() { Reporter = "Anka", DeviationType = "VAB", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
+        }
 
         public void AddDeviations(IEnumerable<Deviation> deviations)
         {
@@ -25,13 +34,7 @@ namespace Aptitud.DeviationReporter.Repositories
 
         public IEnumerable<Deviation> GetCurrentDeviations(string reporterName)
         {
-            var results = new List<Deviation>();
-            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "VAB", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
-            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "SJUK", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
-            results.Add(new Deviation() { Reporter = reporterName, DeviationType = "SEMESTER", ReportDate = DateTime.Now, Duration = new TimeSpan(0, 8, 0, 0, 0) });
-
-            return results;
-
+            return deviations.Where(x => x.Reporter == reporterName);
         }
     }
 }

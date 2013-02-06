@@ -115,7 +115,10 @@
                 }
             });
             
-            $("#username-choice").on("change", function (event, ui) { updateEnableDisable(event, ui); });
+            $("#username-choice").on("change", function (event, ui) {
+                $("#deviationList").empty();
+                updateEnableDisable(event, ui);
+            });
             $("#senddeviation").hide();
             $("input:radio[name=deviationType]").click(function () { updateDefaultHoursForDeviationType(); });
             $('#subOneHour').click(function () { updateDeviationHours(-1); });
@@ -270,7 +273,7 @@
             function addDeviation(deviation) {
                 $("#deviationList").append(
                     "<li>" +
-                        "<input type='hidden' value='" + deviation.DeviationType + "'/>" +
+                        //"<input type='hidden' value='" + deviation.DeviationType + "'/>" +
                         "<p>" +
                             "<strong>" + dateFormat(new Date(deviation.ReportDate), "YYYY-MM-DD") + "</strong>" +
                         "</p>" +
