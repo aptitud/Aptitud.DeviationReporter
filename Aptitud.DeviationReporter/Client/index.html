@@ -274,6 +274,8 @@
                         "<p>" +
                             "<strong>" + dateFormat(new Date(deviation.ReportDate), "YYYY-MM-DD") + "</strong>" +
                         "</p>" +
+                        "<p>" + deviation.DeviationType  +
+                        "</p>" +
                         "<span class='ui-li-count'>" + parseInt(deviation.Duration) + "</span></li>"
                 ).listview('refresh');
             }
